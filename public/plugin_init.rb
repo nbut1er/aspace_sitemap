@@ -15,20 +15,21 @@ Rails.application.config.after_initialize do
       f.close
     end
     
-    robtxt = Pathname.new( dest + 'robots.txt' )
-    sitemap_index = Pathname.new( dest + 'sitemap-index.xml' )
-    if robtxt.exist? && robtxt.file? && sitemap_index.exist? && sitemap_index.file? && dest.directory? && dest.writable?
-      sitemap_root_loc = File.join("#{AppConfig[:public_proxy_url]}","sitemap-index.xml")
-      p "*********    #{robtxt} and #{sitemap_index} exist: checking for sitemap entry ****** "
-      if File.foreach(robtxt).detect { |line| line =~ /sitemap/i }
-        contents = File.read(robtxt)
-        File.write(robtxt, contents.gsub(/sitemap.*$/i, "Sitemap: #{sitemap_root_loc}\n"))
-      else
-        File.open(robtxt, 'a') { |f|
-          f.write("\nSitemap: #{sitemap_root_loc}\n")
-        }
-      end
-      p "*********    updated #{robtxt} with sitemap entry for #{sitemap_index} ****** "
-    end
+    # NB CAM - we're writing the robots.txt file in Puppet so don't need this bit!
+    # robtxt = Pathname.new( dest + 'robots.txt' )
+    # sitemap_index = Pathname.new( dest + 'sitemap-index.xml' )
+    # if robtxt.exist? && robtxt.file? && sitemap_index.exist? && sitemap_index.file? && dest.directory? && dest.writable?
+    #   sitemap_root_loc = File.join("#{AppConfig[:public_proxy_url]}","sitemap-index.xml")
+    #   p "*********    #{robtxt} and #{sitemap_index} exist: checking for sitemap entry ****** "
+    #   if File.foreach(robtxt).detect { |line| line =~ /sitemap/i }
+    #     contents = File.read(robtxt)
+    #     File.write(robtxt, contents.gsub(/sitemap.*$/i, "Sitemap: #{sitemap_root_loc}\n"))
+    #   else
+    #     File.open(robtxt, 'a') { |f|
+    #       f.write("\nSitemap: #{sitemap_root_loc}\n")
+    #     }
+    #   end
+    #   p "*********    updated #{robtxt} with sitemap entry for #{sitemap_index} ****** "
+    # end
   end
 end
