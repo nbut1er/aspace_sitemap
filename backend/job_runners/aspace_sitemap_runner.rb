@@ -204,21 +204,22 @@ class AspaceSitemapRunner < JobRunner
         FileUtils.cp(index_file, File.join("#{dest.dirname}","#{@index_filename}.xml"))
         @job.write_output("Copied sitemap files to PUI root.")
         
-        # update the robots.txt file
-        robtxt = Pathname.new( dest.dirname + 'robots.txt' )
-        if robtxt.exist? && robtxt.file?
-          @job.write_output("Checking robots.txt for sitemap entry")
-          sitemaps_root_loc = File.join("#{@pui_base_url}","#{@index_filename}.xml")
-          if File.foreach(robtxt).detect { |line| line =~ /sitemap/i }
-            contents = File.read(robtxt)
-            File.write(robtxt, contents.gsub(/sitemap.*$/i, "Sitemap: #{sitemaps_root_loc}\n"))
-          else
-            File.open(robtxt, 'a') { |f|
-              f.write("\nSitemap: #{sitemaps_root_loc}.xml\n")
-            }
-          end
-          @job.write_output("Updated robots.txt with entry for #{sitemaps_root_loc}")
-        end
+        # NB CAM - we're writing the robots.txt file in Puppet so don't need this bit!
+        # # update the robots.txt file
+        # robtxt = Pathname.new( dest.dirname + 'robots.txt' )
+        # if robtxt.exist? && robtxt.file?
+        #   @job.write_output("Checking robots.txt for sitemap entry")
+        #   sitemaps_root_loc = File.join("#{@pui_base_url}","#{@index_filename}.xml")
+        #   if File.foreach(robtxt).detect { |line| line =~ /sitemap/i }
+        #     contents = File.read(robtxt)
+        #     File.write(robtxt, contents.gsub(/sitemap.*$/i, "Sitemap: #{sitemaps_root_loc}\n"))
+        #   else
+        #     File.open(robtxt, 'a') { |f|
+        #       f.write("\nSitemap: #{sitemaps_root_loc}.xml\n")
+        #     }
+        #   end
+        #   @job.write_output("Updated robots.txt with entry for #{sitemaps_root_loc}")
+        # end
       end
     end
   end
